@@ -141,5 +141,5 @@ server.listen(PORT, () => {
 
 const https = require('https');
 setInterval(() => {
-  https.get('https://your-render-url.onrender.com');
+  https.get('https://echox-myg7.onrender.com');
 }, 840000); // pings every 14 minutes
