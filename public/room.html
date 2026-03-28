@@ -220,8 +220,15 @@
       transform: scale(1.05);
     }
 
+    /* Visibility Utilities */
+    .mobile-only { display: none !important; }
+    .desktop-only { display: flex !important; }
+
     /* Mobile Breakpoints */
     @media (max-width: 480px) {
+      .mobile-only { display: flex !important; }
+      .desktop-only { display: none !important; }
+
       .top-bar {
         flex-wrap: wrap;
         padding: var(--space-4);
@@ -268,12 +275,16 @@
         <div class="security-badge" title="Secure Room ID" style="max-width: 60%; display: flex; overflow: hidden;">
           <span class="mono" id="top-room-code" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">----</span>
         </div>
-        <div class="security-badge" style="background: transparent; border: none; padding: 0;">
+        <div class="security-badge mobile-only" style="background: transparent; border: none; padding: 0;">
           <div class="dot"></div>
-          <span id="user-count-display" style="white-space: nowrap;">1 online</span>
+          <span class="user-count-display" style="white-space: nowrap;">1 online</span>
         </div>
       </div>
       <div class="top-bar-right">
+        <div class="security-badge desktop-only" style="background: transparent; border: none; padding: 0;">
+          <div class="dot"></div>
+          <span class="user-count-display">1 online</span>
+        </div>
         <button class="leave-btn" id="btn-leave" style="min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;">Leave</button>
       </div>
     </div>
