@@ -590,3 +590,22 @@ p {
   opacity: 0.8;
   font-weight: 500;
 }
+
+/* Mobile Lag & Scaling Fixes */
+@media (max-width: 480px) {
+  /* Disable heavy blur rendering on 6+ flex cards */
+  .glass-panel, .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--surface-container-highest);
+  }
+  
+  .landing-container {
+    gap: 4rem;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .hero-section h1 {
+    font-size: 3.5rem;
+  }
+}
