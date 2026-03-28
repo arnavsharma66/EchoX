@@ -58,7 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   socket.on('user-count', (data) => {
-    document.getElementById('user-count-display').textContent = `${data.count} online`;
+    document.querySelectorAll('.user-count-display').forEach(el => {
+      el.textContent = `${data.count} online`;
+    });
   });
 
   socket.on('message', (data) => {
