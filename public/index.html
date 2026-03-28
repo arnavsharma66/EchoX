@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EchoX - Private by default</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="bg-orbs"></div>
+
+  <main class="landing-container">
+    <div class="hero-section">
+      <div class="hero-glow"></div>
+      <h1>EchoX</h1>
+      <p class="tagline">Private by default.</p>
+      
+      <div class="cta-group">
+        <button class="primary-btn" id="btn-open-create">Create Room</button>
+        <button class="secondary-btn" id="btn-open-join">Join Room</button>
+      </div>
+
+      <div class="explainer">
+        <p>Create a room &nbsp;&rarr;&nbsp; Share the code &nbsp;&rarr;&nbsp; Chat & disappear</p>
+      </div>
+    </div>
+
+    <section class="info-section">
+      <h3>How it works</h3>
+      <div class="grid-cards">
+        <div class="glass-card flex-col">
+          <div class="step-number">1</div>
+          <h4>Create Room</h4>
+          <p>Create a private room with a code and password</p>
+        </div>
+        <div class="glass-card flex-col">
+          <div class="step-number">2</div>
+          <h4>Share Invite</h4>
+          <p>Share the code with whoever you want</p>
+        </div>
+        <div class="glass-card flex-col">
+          <div class="step-number">3</div>
+          <h4>Chat & Vanish</h4>
+          <p>Chat — everything disappears when everyone leaves</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h3>Why EchoX?</h3>
+      <div class="grid-cards">
+        <div class="glass-card flex-col">
+          <div class="icon">🔒</div>
+          <h4>No accounts</h4>
+          <p>No sign up. No email. Nothing.</p>
+        </div>
+        <div class="glass-card flex-col">
+          <div class="icon">🗑️</div>
+          <h4>Zero storage</h4>
+          <p>Messages are never saved anywhere.</p>
+        </div>
+        <div class="glass-card flex-col">
+          <div class="icon">💨</div>
+          <h4>Auto wipe</h4>
+          <p>Room deleted the moment everyone leaves.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    EchoX stores nothing. Ever.
+  </footer>
+
+  <!-- Create Room Modal -->
+  <div class="modal-overlay" id="modal-create">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2>Create Room</h2>
+        <button class="close-btn" data-close="modal-create">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <div class="flex-between">
+          <label for="create-room-code">Room Code</label>
+          <button class="tertiary-btn" id="btn-generate-code" style="padding: 0; font-size: 0.8rem;">Generate</button>
+        </div>
+        <input type="text" id="create-room-code" class="input-field mono" placeholder="e.g. silent-fox-391" maxlength="20">
+        <div class="error-text" id="create-code-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="create-password">Password</label>
+        <input type="password" id="create-password" class="input-field" placeholder="Minimum 4 characters">
+        <div class="error-text" id="create-pwd-error"></div>
+        <div class="strength-indicator">
+          <div class="strength-bar" id="pwd-strength"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Password Type 
+          <span class="tooltip-container" id="info-tooltip-btn">
+            (info)
+            <div class="tooltip-content">
+              <p><strong>One-Time:</strong> only one other person can join using this password. After they enter, the password becomes invalid forever.</p>
+              <p><strong>Reusable:</strong> anyone with the code and password can join anytime.</p>
+            </div>
+          </span>
+        </label>
+        <div class="pill-toggle" id="pwd-type-toggle">
+          <div class="toggle-bg"></div>
+          <button class="active" data-value="reusable">Reusable</button>
+          <button data-value="one-time">One-Time</button>
+        </div>
+      </div>
+
+      <div class="form-group mt-4">
+        <label>Chat Expiry</label>
+        <div class="option-cards">
+          <div class="option-card active">
+            <h4>Wipe on Exit</h4>
+            <p>Deleted when last user leaves.</p>
+          </div>
+          <div class="option-card disabled">
+            <span class="badge">Coming Soon</span>
+            <h4>Timed</h4>
+            <p>Delete after X hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="primary-btn mt-6" style="width: 100%;" id="btn-submit-create">Create Room</button>
+      <div class="error-text text-center mt-4" id="create-server-error"></div>
+    </div>
+  </div>
+
+  <!-- Room Created Modal -->
+  <div class="modal-overlay" id="modal-created">
+    <div class="modal-content glass-card text-center">
+      <div class="modal-header">
+        <h2>Room Created</h2>
+        <button class="close-btn" data-close="modal-created">&times;</button>
+      </div>
+      
+      <p class="mb-4">Share these details. They cannot be recovered once lost.</p>
+
+      <div class="form-group text-center">
+        <label>Room Code</label>
+        <div class="mono" style="font-size: 1.5rem; color: var(--primary);" id="display-room-code"></div>
+      </div>
+
+      <div class="form-group text-center">
+        <label>Password</label>
+        <div class="flex-between" style="justify-content: center; gap: 1rem;">
+          <div class="mono" style="font-size: 1.2rem;" id="display-password">••••••••</div>
+          <button class="tertiary-btn" id="btn-toggle-pwd-visibility">Show</button>
+        </div>
+      </div>
+
+      <div class="cta-group" style="flex-direction: column; width: 100%; margin-top: 2rem;">
+        <button class="secondary-btn" id="btn-copy-invite">Copy Invite</button>
+        <button class="primary-btn" id="btn-enter-room">Enter Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Room Modal -->
+  <div class="modal-overlay" id="modal-join">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2>Join Room</h2>
+        <button class="close-btn" data-close="modal-join">&times;</button>
+      </div>
+
+      <div class="form-group">
+        <label for="join-room-code">Room Code</label>
+        <input type="text" id="join-room-code" class="input-field mono" placeholder="Enter code">
+      </div>
+
+      <div class="form-group">
+        <label for="join-password">Password</label>
+        <input type="password" id="join-password" class="input-field" placeholder="Enter password">
+      </div>
+
+      <div class="error-text text-center mt-2 mb-4" id="join-server-error"></div>
+      <button class="primary-btn" style="width: 100%;" id="btn-submit-join">Enter Room</button>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

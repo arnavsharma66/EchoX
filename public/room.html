@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EchoX Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Room specific styles */
+    body {
+      overflow: hidden; /* Prevent body scroll, handle scroll in messages container */
+    }
+
+    .room-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100vh; /* Fallback */
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-6);
+      background: var(--surface-variant);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--ghost-border);
+      z-index: 10;
+    }
+
+    .top-bar-left, .top-bar-center, .top-bar-right {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .top-bar-center {
+      justify-content: center;
+    }
+
+    .top-bar-right {
+      justify-content: flex-end;
+      gap: var(--space-4);
+    }
+
+    .logo-small {
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: linear-gradient(180deg, #fff, #aaaab3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .leave-btn {
+      background: rgba(255, 110, 132, 0.1);
+      color: var(--error);
+      border: 1px solid rgba(255, 110, 132, 0.3);
+      border-radius: 9999px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .leave-btn:hover {
+      background: rgba(255, 110, 132, 0.2);
+    }
+
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      scroll-behavior: smooth;
+    }
+
+    /* Message Bubbles */
+    .message {
+      max-width: 80%;
+      display: flex;
+      flex-direction: column;
+      animation: msg-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.mine {
+      align-self: flex-end;
+    }
+
+    .message.others {
+      align-self: flex-start;
+    }
+
+    .message.system {
+      align-self: center;
+      text-align: center;
+      max-width: 90%;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin: var(--space-2) 0;
+    }
+
+    .message-bubble {
+      padding: var(--space-4);
+      border-radius: 1.2rem;
+      border: 1px solid var(--ghost-border);
+      position: relative;
+    }
+
+    .message.mine .message-bubble {
+      background: linear-gradient(135deg, var(--primary-dim), var(--secondary-dim));
+      border-bottom-right-radius: 0.2rem;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+      color: #fff;
+    }
+
+    .message.others .message-bubble {
+      background: var(--surface-container-highest);
+      border-bottom-left-radius: 0.2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      color: var(--on-surface);
+    }
+
+    .message-name {
+      font-size: 0.75rem;
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+      font-weight: 600;
+    }
+
+    .message-text {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .message-time {
+      font-size: 0.65rem;
+      opacity: 0.6;
+      text-align: right;
+      margin-top: 0.3rem;
+    }
+
+    .message.system .message-text {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+
+    .bottom-bar {
+      padding: var(--space-4);
+      background: var(--surface-variant);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--ghost-border);
+      display: flex;
+      gap: var(--space-2);
+      z-index: 10;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 9999px;
+      padding: 0.8rem 1.2rem;
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary);
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, var(--primary-dim), var(--secondary-dim));
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .send-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-orbs"></div>
+
+  <div class="room-layout" id="room-layout">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <div class="logo-small">EchoX</div>
+      </div>
+      <div class="top-bar-center">
+        <div class="security-badge" title="Secure Room ID">
+          <span class="mono" id="top-room-code">----</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <div class="security-badge" style="background: transparent; border: none; padding: 0;">
+          <div class="dot"></div>
+          <span id="user-count-display">1 online</span>
+        </div>
+        <button class="leave-btn" id="btn-leave">Leave</button>
+      </div>
+    </div>
+
+    <div class="messages-container" id="messages-container">
+      <div class="message system">
+        <div class="message-text">You joined. Messages are not stored — you'll only see messages sent after this point.</div>
+      </div>
+      <!-- Messages appear here -->
+    </div>
+
+    <div class="bottom-bar" id="bottom-bar">
+      <input type="text" id="chat-input" class="chat-input" placeholder="Type a message..." autocomplete="off">
+      <button class="send-btn" id="btn-send">
+        <svg viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Room Deleted Modal -->
+  <div class="modal-overlay" id="modal-deleted">
+    <div class="modal-content glass-card text-center">
+      <h2>Room Deleted</h2>
+      <p class="mt-4 mb-6">This room no longer exists.</p>
+      <button class="primary-btn" id="btn-home" style="width: 100%;">Back to Home</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/chat.js"></script>
+</body>
+</html>
