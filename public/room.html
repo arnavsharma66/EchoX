@@ -137,8 +137,14 @@
     .message-name {
       font-size: 0.75rem;
       margin-bottom: 0.3rem;
-      opacity: 0.8;
+      opacity: 0.9;
       font-weight: 600;
+      color: var(--on-surface-variant);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
 
     .message-text {
@@ -194,6 +200,7 @@
       border-radius: 50%;
       width: 48px;
       height: 48px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -204,6 +211,34 @@
 
     .send-btn:hover {
       transform: scale(1.05);
+    }
+
+    /* Mobile Breakpoints */
+    @media (max-width: 480px) {
+      .top-bar {
+        flex-wrap: wrap;
+        padding: var(--space-4);
+      }
+      .top-bar-left, .top-bar-right {
+        flex: 1 1 auto;
+      }
+      .top-bar-center {
+        flex: 1 1 100%;
+        order: 3;
+        margin-top: var(--space-4);
+        justify-content: center;
+        gap: var(--space-4);
+        min-width: 0;
+      }
+      .messages-container {
+        padding: var(--space-4);
+      }
+      .bottom-bar {
+        padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+      }
+      .message {
+        max-width: 85%;
+      }
     }
 
     .send-btn svg {
@@ -223,16 +258,16 @@
         <div class="logo-small">EchoX</div>
       </div>
       <div class="top-bar-center">
-        <div class="security-badge" title="Secure Room ID">
-          <span class="mono" id="top-room-code">----</span>
+        <div class="security-badge" title="Secure Room ID" style="max-width: 60%; display: flex; overflow: hidden;">
+          <span class="mono" id="top-room-code" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">----</span>
+        </div>
+        <div class="security-badge" style="background: transparent; border: none; padding: 0;">
+          <div class="dot"></div>
+          <span id="user-count-display" style="white-space: nowrap;">1 online</span>
         </div>
       </div>
       <div class="top-bar-right">
-        <div class="security-badge" style="background: transparent; border: none; padding: 0;">
-          <div class="dot"></div>
-          <span id="user-count-display">1 online</span>
-        </div>
-        <button class="leave-btn" id="btn-leave">Leave</button>
+        <button class="leave-btn" id="btn-leave" style="min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;">Leave</button>
       </div>
     </div>
 
