@@ -30,6 +30,8 @@
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--ghost-border);
       z-index: 10;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     .top-bar-left, .top-bar-center, .top-bar-right {
@@ -75,11 +77,12 @@
     .messages-container {
       flex: 1;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding: var(--space-6);
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
-      scroll-behavior: smooth;
+      transform: translateZ(0);
     }
 
     /* Message Bubbles */
@@ -174,6 +177,8 @@
       display: flex;
       gap: var(--space-2);
       z-index: 10;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     .chat-input {
