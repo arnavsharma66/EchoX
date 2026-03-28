@@ -96,6 +96,8 @@ p {
     radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 85% 30%, rgba(34, 211, 238, 0.05) 0%, transparent 50%);
   filter: blur(60px);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Components */
